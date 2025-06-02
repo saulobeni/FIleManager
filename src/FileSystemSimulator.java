@@ -43,11 +43,11 @@ public class FileSystemSimulator {
             if (input.isEmpty()) continue;
 
             if (journal.hasPendingOperation()) {
-                if (input.equalsIgnoreCase("commit")) {
+                if (input.equalsIgnoreCase("save")) {
                     applyJournalOperation();
                     journal.clear();
                 } else {
-                    System.out.println("⚠️ Há uma operação pendente: '" + journal.getPendingOperation() + "'. Use 'commit' antes de continuar.");
+                    System.out.println("⚠️ Há uma operação pendente: '" + journal.getPendingOperation() + "'. Use 'save' antes de continuar.");
                 }
                 continue;
             }
@@ -63,7 +63,7 @@ public class FileSystemSimulator {
                 case "help":
                     showHelp();
                     break;
-                case "commit":
+                case "save":
                     System.out.println("Nenhuma operação pendente.");
                     break;
                 case "cd":
@@ -90,7 +90,7 @@ public class FileSystemSimulator {
                     break;
                 default:
                     journal.saveOperation(input);
-                    System.out.println("📝 Operação '" + input + "' registrada. Use 'commit' para aplicar.");
+                    System.out.println("📝 Operação '" + input + "' registrada. Use 'save' para aplicar.");
             }
         }
     }
@@ -171,7 +171,7 @@ public class FileSystemSimulator {
         System.out.println(" renamefile <velho> <novo> - Renomear arquivo");
         System.out.println(" cd <nome> | cd ..         - Entrar em diretório ou voltar ao anterior");
         System.out.println(" ls                        - Listar conteúdo");
-        System.out.println(" commit                    - Executar a operação pendente");
+        System.out.println(" save                    - Executar a operação pendente");
         System.out.println(" help                      - Mostrar comandos");
         System.out.println(" exit                      - Salvar e sair");
     }
