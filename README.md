@@ -80,7 +80,7 @@ Isso garante que **nenhuma operação crítica será perdida** ou aplicada de fo
 | `cd <nome>`                   | Entra em um subdiretório                     |
 | `cd ..`                       | Volta para o diretório pai                   |
 | `ls` ou `list`                | Lista arquivos e diretórios                  |
-| `commit`                      | Executa a operação pendente do journal       |
+| `save`                      | Executa a operação pendente do journal       |
 | `exit`                        | Salva e encerra o sistema                    |
 | `help`                        | Mostra a lista de comandos                   |
 
