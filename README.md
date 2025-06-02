@@ -58,8 +58,8 @@ O journal funciona da seguinte forma:
 
 1. O usuário executa um comando (`createdir pasta1`)
 2. O comando é salvo no `journal.log`
-3. O sistema **aguarda** confirmação via `commit`
-4. Ao usar `commit`, o sistema executa a operação e limpa o journal
+3. O sistema **aguarda** confirmação via `save`
+4. Ao usar `save`, o sistema executa a operação e limpa o journal
 
 Isso garante que **nenhuma operação crítica será perdida** ou aplicada de forma incorreta em caso de falhas.
 
