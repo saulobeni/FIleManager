@@ -1,0 +1,23 @@
+# Compilados Java
+*.class
+
+#
+journal.log
+filesystem.beni
+
+# Diretórios de build
+bin/
+lib/
+
+# Arquivos temporários e de sistema
+*.log
+*.tmp
+
+# IDEs e configurações locais
+.vscode/
+.idea/
+*.iml
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
