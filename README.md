@@ -1,4 +1,3 @@
-````markdown
 # Simulador de Sistema de Arquivos com Journaling
 
 ## Como rodar a aplicação (Java)
@@ -116,6 +115,4 @@ bin/
 *.class
 journal.log
 filesystem.beni
-```
-
 ```
