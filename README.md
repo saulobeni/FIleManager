@@ -1,95 +1,145 @@
+```markdown
 # 🗂️ Simulador de Sistema de Arquivos com Journaling
 
-## 📄 Resumo
+## 🔧 Como rodar a aplicação (Java)
 
-Este projeto apresenta um simulador de sistema de arquivos desenvolvido em Java, com suporte a operações básicas como criação, exclusão, renomeação e navegação entre arquivos e diretórios. O sistema implementa **journaling real (write-ahead logging)**, garantindo integridade dos dados ao registrar e confirmar operações antes de sua execução definitiva.
+### ✅ Pré-requisitos
 
----
+- Java JDK 11 ou superior
+- Terminal (cmd, PowerShell, Git Bash ou outro shell compatível)
+- Estrutura de pastas:
 
-## 📚 Introdução
+```
 
-O gerenciamento de arquivos é um componente essencial dos sistemas operacionais modernos. Entender como os arquivos e diretórios são organizados, manipulados e protegidos contra falhas é crucial para compreender o funcionamento interno do sistema operacional.
+SystemArchive/
+├── bin/                 ← pasta onde os `.class` compilados serão gerados
+├── src/                 ← arquivos-fonte `.java`
+│   ├── Directory.java
+│   ├── FileSystemSimulator.java
+│   ├── Journal.java
+│   └── SimFile.java
+├── journal.log          ← gerado automaticamente pelo sistema
+├── filesystem.beni      ← gerado automaticamente com os dados salvos
+└── README.md
 
-Este projeto simula o comportamento de um sistema de arquivos, incluindo um mecanismo de **journaling**, que registra operações críticas antes de serem efetivamente aplicadas, garantindo consistência em caso de falhas.
+````
 
----
+### ▶️ Compilar
 
-## 🎯 Objetivo
+Abra o terminal na raiz do projeto e execute:
 
-Desenvolver um simulador de sistema de arquivos com as seguintes características:
+```bash
+javac -d bin src/*.java
+````
 
-- Linguagem: **Java**
-- Interface: Modo **shell interativo**
-- Suporte a:
-  - Criação e remoção de arquivos
-  - Renomeação de arquivos e diretórios
-  - Criação, remoção e navegação entre diretórios
-  - Listagem de conteúdo de diretórios
-- Journaling persistente (arquivo `journal.log`)
-- Salvamento do sistema de arquivos (`filesystem.beni`)
+Isso compila todos os arquivos `.java` da pasta `src/` e coloca os arquivos `.class` em `bin/`.
 
----
+### 🚀 Executar
 
-## 🛠️ Metodologia
+Após compilar, execute o sistema com:
 
-A aplicação é composta por classes Java que representam os elementos do sistema de arquivos. As operações do usuário são registradas no **journal** antes de serem executadas. O sistema só aplica a ação quando o usuário confirma com o comando `commit`, simulando um processo de journaling real.
+```bash
+java -cp bin FileSystemSimulator
+```
 
-### Tecnologias
-
-- Java (JDK 11+)
-- Interface em terminal
-- Persistência com serialização (`ObjectOutputStream`)
-- Arquivo de log (`journal.log`) para o journaling
-
----
-
-## 🧱 Arquitetura do Sistema
-
-### 📁 Estruturas de Dados
-
-- `SimFile`: representa um arquivo.
-- `Directory`: representa um diretório com arquivos e subdiretórios.
-- `FileSystemSimulator`: classe principal que controla a execução.
-- `Journal`: registra operações pendentes em disco.
-
-### 🧠 Journaling (Write-Ahead Logging)
-
-O journal funciona da seguinte forma:
-
-1. O usuário executa um comando (`createdir pasta1`)
-2. O comando é salvo no `journal.log`
-3. O sistema **aguarda** confirmação via `save`
-4. Ao usar `save`, o sistema executa a operação e limpa o journal
-
-Isso garante que **nenhuma operação crítica será perdida** ou aplicada de forma incorreta em caso de falhas.
+> O sistema criará automaticamente os arquivos `filesystem.beni` e `journal.log`.
 
 ---
 
-## 💻 Funcionalidades
+## 📘 Descrição do Projeto
 
-### Comandos disponíveis:
+Este projeto implementa um **simulador de sistema de arquivos**, com suporte a:
 
-| Comando                        | Descrição                                    |
-|-------------------------------|----------------------------------------------|
-| `createfile <nome>`           | Cria um novo arquivo                         |
-| `deletefile <nome>`           | Apaga um arquivo                             |
-| `renamefile <antigo> <novo>`  | Renomeia um arquivo                          |
-| `createdir <nome>`            | Cria um novo diretório                       |
-| `deletedir <nome>`            | Remove um diretório vazio                    |
-| `renamedir <antigo> <novo>`   | Renomeia um diretório                        |
-| `cd <nome>`                   | Entra em um subdiretório                     |
-| `cd ..`                       | Volta para o diretório pai                   |
-| `ls` ou `list`                | Lista arquivos e diretórios                  |
-| `save`                      | Executa a operação pendente do journal       |
-| `exit`                        | Salva e encerra o sistema                    |
-| `help`                        | Mostra a lista de comandos                   |
+* Criação, remoção e renomeação de arquivos e diretórios
+* Navegação por diretórios
+* Registro persistente do sistema de arquivos
+* Histórico de comandos com data e hora (journaling)
 
 ---
 
-## 🔄 Fluxo de Operação
+## 🧠 Conceito de Journaling
 
-```text
-> createdir projetos
-📝 Operação 'createdir projetos' registrada. Use 'commit' para aplicar.
-> commit
-✅ Diretório criado.
+Todas as operações executadas são registradas no arquivo `journal.log` com **data e hora**, funcionando como um log permanente do que foi feito no sistema.
+
+### Exemplo de `journal.log`:
+
+```
+2025-06-03 21:15:00 - createdir documentos
+2025-06-03 21:15:05 - createfile notas.txt
+2025-06-03 21:15:12 - cd documentos
+```
+
+---
+
+## 📦 Estrutura das Classes
+
+| Arquivo                    | Função                                                  |
+| -------------------------- | ------------------------------------------------------- |
+| `Directory.java`           | Representa diretórios e gerencia arquivos/subdiretórios |
+| `SimFile.java`             | Representa arquivos individuais                         |
+| `Journal.java`             | Registra comandos executados com data e hora            |
+| `FileSystemSimulator.java` | Classe principal com o shell interativo para o usuário  |
+
+---
+
+## 💬 Comandos disponíveis
+
+| Comando                      | Descrição                                |
+| ---------------------------- | ---------------------------------------- |
+| `createdir <nome>`           | Cria um novo diretório                   |
+| `deletedir <nome>`           | Remove um diretório vazio                |
+| `renamedir <antigo> <novo>`  | Renomeia um diretório                    |
+| `createfile <nome>`          | Cria um novo arquivo                     |
+| `deletefile <nome>`          | Remove um arquivo                        |
+| `renamefile <antigo> <novo>` | Renomeia um arquivo                      |
+| `cd <nome>`                  | Entra em um subdiretório                 |
+| `cd ..`                      | Volta para o diretório anterior          |
+| `ls` ou `list`               | Lista o conteúdo do diretório atual      |
+| `journal`                    | Exibe o histórico de comandos executados |
+| `exit`                       | Salva o sistema e encerra o programa     |
+| `help`                       | Exibe todos os comandos disponíveis      |
+
+---
+
+## 👨‍💻 Exemplo de uso
+
+```
+/root > createdir projetos
+Diretório criado.
+
+/root > cd projetos
+/root/projetos > createfile plano.txt
+Arquivo criado.
+
+/root/projetos > journal
+📓 Histórico de comandos executados:
+ - 2025-06-03 21:20:05 - createdir projetos
+ - 2025-06-03 21:20:10 - cd projetos
+ - 2025-06-03 21:20:15 - createfile plano.txt
+```
+
+---
+
+## 📝 Autores
+
+* Nome 1 – RA 123456
+* Nome 2 – RA 654321
+
+> Substitua pelos nomes reais e RAs da dupla antes de enviar
+
+---
+
+## 🗃️ Observações
+
+* O arquivo `filesystem.beni` armazena os dados do sistema de arquivos entre sessões.
+* O `journal.log` registra todos os comandos executados com data e hora.
+* Arquivos como `.class`, `.log` e o `filesystem.beni` devem ser ignorados pelo Git. Exemplo de `.gitignore`:
+
+```gitignore
+bin/
+*.class
+journal.log
+filesystem.beni
+```
+
+---
