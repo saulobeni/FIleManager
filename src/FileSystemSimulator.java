@@ -42,16 +42,6 @@ public class FileSystemSimulator {
 
             if (input.isEmpty()) continue;
 
-            if (journal.hasPendingOperation()) {
-                if (input.equalsIgnoreCase("save")) {
-                    applyJournalOperation();
-                    journal.clear();
-                } else {
-                    System.out.println("⚠️ Há uma operação pendente: '" + journal.getPendingOperation() + "'. Use 'save' antes de continuar.");
-                }
-                continue;
-            }
-
             String[] args = input.split("\\s+");
             String command = args[0].toLowerCase();
 
@@ -60,18 +50,72 @@ public class FileSystemSimulator {
                     saveToFile();
                     System.out.println("Sistema salvo em " + DATA_FILE);
                     return;
+
                 case "help":
                     showHelp();
                     break;
-                case "save":
-                    System.out.println("Nenhuma operação pendente.");
+
+                case "createfile":
+                    if (args.length >= 2 && currentDir.createFile(args[1])) {
+                        journal.log("createfile " + args[1]);
+                        System.out.println("Arquivo criado.");
+                    } else {
+                        System.out.println("Erro ao criar arquivo.");
+                    }
                     break;
+
+                case "deletefile":
+                    if (args.length >= 2 && currentDir.deleteFile(args[1])) {
+                        journal.log("deletefile " + args[1]);
+                        System.out.println("Arquivo apagado.");
+                    } else {
+                        System.out.println("Erro ao apagar arquivo.");
+                    }
+                    break;
+
+                case "renamefile":
+                    if (args.length >= 3 && currentDir.renameFile(args[1], args[2])) {
+                        journal.log("renamefile " + args[1] + " " + args[2]);
+                        System.out.println("Arquivo renomeado.");
+                    } else {
+                        System.out.println("Erro ao renomear arquivo.");
+                    }
+                    break;
+
+                case "createdir":
+                    if (args.length >= 2 && currentDir.createDirectory(args[1])) {
+                        journal.log("createdir " + args[1]);
+                        System.out.println("Diretório criado.");
+                    } else {
+                        System.out.println("Erro ao criar diretório.");
+                    }
+                    break;
+
+                case "deletedir":
+                    if (args.length >= 2 && currentDir.deleteDirectory(args[1])) {
+                        journal.log("deletedir " + args[1]);
+                        System.out.println("Diretório apagado.");
+                    } else {
+                        System.out.println("Erro ao apagar diretório (pode estar vazio?).");
+                    }
+                    break;
+
+                case "renamedir":
+                    if (args.length >= 3 && currentDir.renameDirectory(args[1], args[2])) {
+                        journal.log("renamedir " + args[1] + " " + args[2]);
+                        System.out.println("Diretório renomeado.");
+                    } else {
+                        System.out.println("Erro ao renomear diretório.");
+                    }
+                    break;
+
                 case "cd":
                     if (args.length < 2) {
                         System.out.println("Uso: cd <nome_dir> ou cd ..");
                     } else if (args[1].equals("..")) {
                         if (currentDir.getParent() != null) {
                             currentDir = currentDir.getParent();
+                            journal.log("cd ..");
                         } else {
                             System.out.println("Já está no diretório raiz.");
                         }
@@ -79,74 +123,25 @@ public class FileSystemSimulator {
                         Directory target = currentDir.getDirectory(args[1]);
                         if (target != null) {
                             currentDir = target;
+                            journal.log("cd " + args[1]);
                         } else {
                             System.out.println("Diretório não encontrado.");
                         }
                     }
                     break;
+
                 case "list":
                 case "ls":
                     listCurrentDirectory();
                     break;
+
+                case "journal":
+                    journal.printJournal();
+                    break;
+
                 default:
-                    journal.saveOperation(input);
-                    System.out.println("📝 Operação '" + input + "' registrada. Use 'save' para aplicar.");
+                    System.out.println("Comando inválido. Digite 'help'.");
             }
-        }
-    }
-
-    private void applyJournalOperation() {
-        String op = journal.getPendingOperation();
-        if (op == null || op.isEmpty()) return;
-
-        String[] args = op.split("\\s+");
-        String command = args[0].toLowerCase();
-
-        switch (command) {
-            case "createfile":
-                if (args.length >= 2 && currentDir.createFile(args[1])) {
-                    System.out.println("✅ Arquivo criado.");
-                } else {
-                    System.out.println("❌ Erro ao criar arquivo.");
-                }
-                break;
-            case "deletefile":
-                if (args.length >= 2 && currentDir.deleteFile(args[1])) {
-                    System.out.println("✅ Arquivo apagado.");
-                } else {
-                    System.out.println("❌ Erro ao apagar arquivo.");
-                }
-                break;
-            case "renamefile":
-                if (args.length >= 3 && currentDir.renameFile(args[1], args[2])) {
-                    System.out.println("✅ Arquivo renomeado.");
-                } else {
-                    System.out.println("❌ Erro ao renomear arquivo.");
-                }
-                break;
-            case "createdir":
-                if (args.length >= 2 && currentDir.createDirectory(args[1])) {
-                    System.out.println("✅ Diretório criado.");
-                } else {
-                    System.out.println("❌ Erro ao criar diretório.");
-                }
-                break;
-            case "deletedir":
-                if (args.length >= 2 && currentDir.deleteDirectory(args[1])) {
-                    System.out.println("✅ Diretório apagado.");
-                } else {
-                    System.out.println("❌ Erro ao apagar diretório (pode estar vazio?).");
-                }
-                break;
-            case "renamedir":
-                if (args.length >= 3 && currentDir.renameDirectory(args[1], args[2])) {
-                    System.out.println("✅ Diretório renomeado.");
-                } else {
-                    System.out.println("❌ Erro ao renomear diretório.");
-                }
-                break;
-            default:
-                System.out.println("⚠️ Comando não reconhecido no journal: " + op);
         }
     }
 
@@ -171,13 +166,13 @@ public class FileSystemSimulator {
         System.out.println(" renamefile <velho> <novo> - Renomear arquivo");
         System.out.println(" cd <nome> | cd ..         - Entrar em diretório ou voltar ao anterior");
         System.out.println(" ls                        - Listar conteúdo");
-        System.out.println(" save                    - Executar a operação pendente");
+        System.out.println(" journal                   - Exibir histórico de comandos");
         System.out.println(" help                      - Mostrar comandos");
         System.out.println(" exit                      - Salvar e sair");
     }
 
     private String currentPath(Directory dir) {
-        if (dir.getParent() == null) return "/root";
+        if (dir.getParent() == null) return "/usuario";
         return currentPath(dir.getParent()) + "/" + dir.getName();
     }
 
