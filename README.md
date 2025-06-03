@@ -9,21 +9,6 @@
 - Terminal (cmd, PowerShell, Git Bash ou outro shell compatível)
 - Estrutura de pastas:
 
-```
-
-SystemArchive/
-├── bin/                 ← pasta onde os `.class` compilados serão gerados
-├── src/                 ← arquivos-fonte `.java`
-│   ├── Directory.java
-│   ├── FileSystemSimulator.java
-│   ├── Journal.java
-│   └── SimFile.java
-├── journal.log          ← gerado automaticamente pelo sistema
-├── filesystem.beni      ← gerado automaticamente com os dados salvos
-└── README.md
-
-````
-
 ### ▶️ Compilar
 
 Abra o terminal na raiz do projeto e execute:
