@@ -1,7 +1,3 @@
-Claro! Aqui está o `README.md` com todos os **emojis removidos**, mantendo a formatação clara e profissional:
-
----
-
 ````markdown
 # Simulador de Sistema de Arquivos com Journaling
 
@@ -122,7 +118,4 @@ journal.log
 filesystem.beni
 ```
 
-```
-
-Se quiser, posso exportar este conteúdo como `.md` ou `.pdf` agora mesmo. Deseja?
 ```
