@@ -1,14 +1,19 @@
-# 🗂️ Simulador de Sistema de Arquivos com Journaling
+Claro! Aqui está o `README.md` com todos os **emojis removidos**, mantendo a formatação clara e profissional:
 
-## 🔧 Como rodar a aplicação (Java)
+---
 
-### ✅ Pré-requisitos
+````markdown
+# Simulador de Sistema de Arquivos com Journaling
+
+## Como rodar a aplicação (Java)
+
+### Pré-requisitos
 
 - Java JDK 11 ou superior
 - Terminal (cmd, PowerShell, Git Bash ou outro shell compatível)
 - Estrutura de pastas:
 
-### ▶️ Compilar
+### Compilar
 
 Abra o terminal na raiz do projeto e execute:
 
@@ -18,7 +23,7 @@ javac -d bin src/*.java
 
 Isso compila todos os arquivos `.java` da pasta `src/` e coloca os arquivos `.class` em `bin/`.
 
-### 🚀 Executar
+### Executar
 
 Após compilar, execute o sistema com:
 
@@ -26,13 +31,13 @@ Após compilar, execute o sistema com:
 java -cp bin FileSystemSimulator
 ```
 
-> O sistema criará automaticamente os arquivos `filesystem.beni` e `journal.log`.
+O sistema criará automaticamente os arquivos `filesystem.beni` e `journal.log`.
 
 ---
 
-## 📘 Descrição do Projeto
+## Descrição do Projeto
 
-Este projeto implementa um **simulador de sistema de arquivos**, com suporte a:
+Este projeto implementa um simulador de sistema de arquivos, com suporte a:
 
 * Criação, remoção e renomeação de arquivos e diretórios
 * Navegação por diretórios
@@ -41,9 +46,9 @@ Este projeto implementa um **simulador de sistema de arquivos**, com suporte a:
 
 ---
 
-## 🧠 Conceito de Journaling
+## Conceito de Journaling
 
-Todas as operações executadas são registradas no arquivo `journal.log` com **data e hora**, funcionando como um log permanente do que foi feito no sistema.
+Todas as operações executadas são registradas no arquivo `journal.log` com data e hora, funcionando como um log permanente do que foi feito no sistema.
 
 ### Exemplo de `journal.log`:
 
@@ -55,7 +60,7 @@ Todas as operações executadas são registradas no arquivo `journal.log` com **
 
 ---
 
-## 📦 Estrutura das Classes
+## Estrutura das Classes
 
 | Arquivo                    | Função                                                  |
 | -------------------------- | ------------------------------------------------------- |
@@ -66,7 +71,7 @@ Todas as operações executadas são registradas no arquivo `journal.log` com **
 
 ---
 
-## 💬 Comandos disponíveis
+## Comandos disponíveis
 
 | Comando                      | Descrição                                |
 | ---------------------------- | ---------------------------------------- |
@@ -85,7 +90,7 @@ Todas as operações executadas são registradas no arquivo `journal.log` com **
 
 ---
 
-## 👨‍💻 Exemplo de uso
+## Exemplo de uso
 
 ```
 /root > createdir projetos
@@ -96,7 +101,7 @@ Diretório criado.
 Arquivo criado.
 
 /root/projetos > journal
-📓 Histórico de comandos executados:
+Histórico de comandos executados:
  - 2025-06-03 21:20:05 - createdir projetos
  - 2025-06-03 21:20:10 - cd projetos
  - 2025-06-03 21:20:15 - createfile plano.txt
@@ -104,16 +109,7 @@ Arquivo criado.
 
 ---
 
-## 📝 Autores
-
-* Nome 1 – RA 123456
-* Nome 2 – RA 654321
-
-> Substitua pelos nomes reais e RAs da dupla antes de enviar
-
----
-
-## 🗃️ Observações
+## Observações
 
 * O arquivo `filesystem.beni` armazena os dados do sistema de arquivos entre sessões.
 * O `journal.log` registra todos os comandos executados com data e hora.
@@ -124,4 +120,9 @@ bin/
 *.class
 journal.log
 filesystem.beni
+```
+
+```
+
+Se quiser, posso exportar este conteúdo como `.md` ou `.pdf` agora mesmo. Deseja?
 ```
