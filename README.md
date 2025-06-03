@@ -26,7 +26,7 @@ Após compilar, execute o sistema com:
 java -cp bin FileSystemSimulator
 ```
 
-O sistema criará automaticamente os arquivos `filesystem.beni` e `journal.log`.
+O sistema criará automaticamente os arquivos `filesystem.beni` e `journal.log` apenas ao finalizar a aplicacao com `exit`.
 
 ---
 
